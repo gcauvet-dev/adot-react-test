@@ -8,7 +8,7 @@ import FocusedInput from '../FocusedInput';
 import '../../assets/css/AddDestinationModal.css';
 
 const AddDestinationModal = (props) => {
-    const { isChecked, handleEnabledCheckbox, handleModalVisibility, handleLocalStorageClear, modalVisibility, handleSubmit, addDestination, register } = props;
+    const { isEnabled, handleEnabledCheckbox, handleModalVisibility, handleLocalStorageClear, modalVisibility, handleSubmit, addDestination, register } = props;
 
     return (
         <Modal autoFocus={false} size='lg' aria-labelledby='contained-modal-title-vcenter' centered show={modalVisibility} onHide={handleModalVisibility}>
@@ -52,7 +52,7 @@ const AddDestinationModal = (props) => {
 
                         <Row className='row-modal'>
                             <Col md={10}>
-                                <Checkbox checked={isChecked} id='enabled' name='enabled' ref={register} onChange={handleEnabledCheckbox}>
+                                <Checkbox checked={isEnabled} id='enabled' name='enabled' ref={register} onChange={handleEnabledCheckbox}>
                                     Activé
                                 </Checkbox>
                             </Col>
@@ -86,7 +86,7 @@ AddDestinationModal.propTypes = {
     handleLocalStorageClear: propTypes.func.isRequired,
     handleEnabledCheckbox: propTypes.func.isRequired,
     modalVisibility: propTypes.bool.isRequired,
-    isChecked: propTypes.bool.isRequired,
+    isEnabled: propTypes.bool.isRequired,
 };
 
 export default AddDestinationModal;

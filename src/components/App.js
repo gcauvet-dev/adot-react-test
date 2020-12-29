@@ -14,8 +14,6 @@ import { getDestinationsFromAPI } from '../services/destination.services';
 import DestinationContext from '../helpers/Contexts/DestinationContext';
 import useLocalStorage from '../helpers/Hooks/useLocalStorage';
 
-const handleSwitch = () => {};
-
 const App = () => {
     const [destinations, setDestinations] = useLocalStorage('destinations', []);
     const handleLocalStorageClear = () => setDestinations([]);
@@ -32,8 +30,8 @@ const App = () => {
     const [modalVisibility, setModalVisibility] = useState(false);
     const handleModalVisibility = () => setModalVisibility(!modalVisibility);
 
-    const [isChecked, setChecked] = useState(true);
-    const handleEnabledCheckbox = () => setChecked(!isChecked);
+    const [isEnabled, setEnabled] = useState(true);
+    const handleEnabledCheckbox = () => setEnabled(!isEnabled);
 
     const { register, handleSubmit } = useForm();
 
@@ -59,6 +57,10 @@ const App = () => {
         handleModalVisibility();
     };
 
+    const handleEnableSwitch = (checked, evt, id) => {
+        setDestinations(destinations.map((destination) => (destination.uid === id ? { ...destination, enabled: checked } : destination)));
+    };
+
     return (
         <Container className='main'>
             <Row>
@@ -76,14 +78,14 @@ const App = () => {
             <Container className='app-container'>
                 {destinations.map((destination) => (
                     <DestinationContext.Provider value={destination}>
-                        <Destination handleSwitch={handleSwitch} />
+                        <Destination handleEnableSwitch={handleEnableSwitch} />
                     </DestinationContext.Provider>
                 ))}
             </Container>
 
             <AddDestinationModal
                 handleModalVisibility={handleModalVisibility}
-                isChecked={isChecked}
+                isEnabled={isEnabled}
                 handleEnabledCheckbox={handleEnabledCheckbox}
                 modalVisibility={modalVisibility}
                 handleLocalStorageClear={handleLocalStorageClear}
@@ -97,7 +99,9 @@ const App = () => {
 
 export default App;
 
-// TODO: Switch state managment
+// Each child in a list should have a unique "key" prop.
 // TODO: Delete
+// TODO : Spinner
 // TODO: Search
 // TODO: Image
+// TODO: Tests

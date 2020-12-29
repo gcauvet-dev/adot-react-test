@@ -8,8 +8,8 @@ import DestinationContext from '../helpers/Contexts/DestinationContext';
 import defaultImage from '../assets/images/default.png';
 import '../assets/css/Destination.css';
 
-const Destination = ({ handleSwitch }) => {
-    const destination = useContext(DestinationContext) || [];
+const Destination = ({ handleEnableSwitch }) => {
+    const destination = useContext(DestinationContext) || {};
     const { enabled, fullAdress, city, uid, statistics: { population, hotels, averageIncome, surface } = {} } = destination;
 
     return (
@@ -24,7 +24,8 @@ const Destination = ({ handleSwitch }) => {
 
                 <Col sm={3}>
                     <Switch
-                        onChange={handleSwitch}
+                        onChange={handleEnableSwitch}
+                        id={uid}
                         checked={enabled}
                         uncheckedIcon={false}
                         checkedIcon={false}
@@ -90,7 +91,7 @@ Destination.propTypes = {
             surface: propTypes.number,
         }),
     }),
-    handleSwitch: propTypes.func.isRequired,
+    handleEnableSwitch: propTypes.func.isRequired,
 };
 
 Destination.defaultProps = { destination: {} };
