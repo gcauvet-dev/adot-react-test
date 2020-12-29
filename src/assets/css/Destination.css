@@ -1,0 +1,95 @@
+.destination {
+  width: 442px;
+  flex: 0 0 442px;
+  margin: 10px;
+  padding: 0 0 25px 0;
+  border-radius: 13px;
+  box-shadow: 2px 5px 20px 0 rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+}
+
+.title {
+  margin: 0 285.5px 74px 0.5px;
+  font-family: 'Open Sans';
+  font-size: 32px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #333333;
+}
+
+.addButon {
+  width: 121px;
+  height: 36px;
+  margin: 4px 0 77px 345.5px;
+  padding: 9px 21px 8px;
+}
+
+.image {
+  width: 441px;
+  height: 221px;  
+  border-radius: 13px 13px 0 0 ;
+  margin: 0 0 23px;
+  object-fit: strech;
+}
+
+.city-name {
+  font-family: 'Open Sans';
+  margin: 0 92px 0 21px;
+  font-size: 20px;
+  font-weight: 700;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  color: #333333;
+}
+
+.address {
+  font-family: 'Open Sans';
+  margin: 3px 29px 32px 21px;
+  font-size: 16px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: normal;
+  color: #333333;
+}
+
+hr {
+  border: solid 1px #e5e5e5;
+}
+
+.stat {
+  font-family: 'Roboto';
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.57;
+  letter-spacing: normal;
+  text-align: center;
+  color: #333333;
+}
+
+.label {
+  font-family: 'Roboto';
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.57;
+  letter-spacing: normal;
+  text-align: center;
+  color: #333333;
+}
+
+.destination-row {
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    margin-right: 10px;
+}
