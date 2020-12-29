@@ -1,0 +1,78 @@
+{
+    "env": {
+        "browser": true,
+        "es2020": true
+    },
+    "globals": {
+        "localStorage": true
+    },
+    "plugins": [
+        "react",
+        "prettier",
+        "jsx-a11y",
+        "react-hooks"
+    ],
+    "extends": [
+        "airbnb",
+        "prettier",
+        "prettier/babel",
+        "prettier/react",
+        "plugin:prettier/recommended",
+        "eslint:recommended"
+    ],
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2020,
+        "sourceType": "module"
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
+    "rules": {
+        "no-underscore-dangle": [
+            "error",
+            {
+                "allow": [
+                    "_id"
+                ]
+            }
+        ],
+        "react/jsx-filename-extension": [
+            1,
+            {
+                "extensions": [
+                    ".js",
+                    ".jsx"
+                ]
+            }
+        ],
+        "import/no-extraneous-dependencies": [
+            "error",
+            {
+                "devDependencies": true,
+                "optionalDependencies": true,
+                "peerDependencies": true
+            }
+        ],
+        "max-len": [
+            "error",
+            {
+                "code": 200,
+                "ignoreComments": true,
+                "ignoreTemplateLiterals": true
+            }
+        ],
+        "no-unused-expressions": [
+            "error",
+            {
+                "allowTernary": true
+            }
+        ],
+        "prettier/prettier": ["error"]
+    }
+}
