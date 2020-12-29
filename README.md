@@ -12,13 +12,6 @@ $ npm i
 $ npm start
 ```
 
-### Tests
-```sh
-$ npm run test
-# Or
-$ npm run test:watch
-```
-
 ### Contact
 * Email: gcauvet@smaha-consulting.com
 * Website: gcauvet-dev.com
