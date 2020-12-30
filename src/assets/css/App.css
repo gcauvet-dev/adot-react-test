@@ -1,6 +1,6 @@
 #root {
-  padding: 95px 272px 50px 272.5px;
-  background-color: #f9f9f9;
+    padding: 25px;
+    background-color: #f9f9f9;
 }
 
 .app-container {
@@ -11,8 +11,16 @@
     width: 100%;
 }
 
+.centered-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
+
 .app-title {
-    margin: 0 285.5px 74px 0.5px;
+    margin: 25px;
     font-family: 'Open Sans';
     font-size: 32px;
     font-weight: 300;
@@ -20,5 +28,26 @@
     font-style: normal;
     line-height: normal;
     letter-spacing: normal;
+    color: #333333;
+}
+
+.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 75px;
+}
+
+.searchbar {
+    height: 42px;
+    padding: 12px 42px 13px 16px;
+    border-radius: 4px;
+    font-family: 'Roboto';
+    font-size: 14px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.71;
+    letter-spacing: 0.13px;
     color: #333333;
 }
