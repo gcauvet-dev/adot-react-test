@@ -15,8 +15,8 @@ function FocusedInput(props) {
         <Form.Control
             autoFocus
             required
-            id='fullAdress'
-            name='fullAdress'
+            id='fullAddress'
+            name='fullAddress'
             type='text'
             className='modal-address'
             size='lg'

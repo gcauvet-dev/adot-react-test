@@ -8,7 +8,7 @@ import FocusedInput from '../FocusedInput';
 import '../../assets/css/AddDestinationModal.css';
 
 const AddDestinationModal = (props) => {
-    const { isEnabled, handleEnabledCheckbox, handleModalVisibility, handleLocalStorageClear, modalVisibility, handleSubmit, addDestination, register } = props;
+    const { isEnabled, handleEnabledCheckbox, handleModalVisibility, modalVisibility, handleSubmit, addDestination, register } = props;
 
     return (
         <Modal autoFocus={false} size='lg' aria-labelledby='contained-modal-title-vcenter' centered show={modalVisibility} onHide={handleModalVisibility}>
@@ -63,14 +63,6 @@ const AddDestinationModal = (props) => {
                                 </Button>
                             </Col>
                         </Row>
-
-                        <br />
-
-                        <Row className='modal-delete'>
-                            <Form.Label className='delete-data' onClick={handleLocalStorageClear}>
-                                Rafraichir les données
-                            </Form.Label>
-                        </Row>
                     </Form.Group>
                 </Form>
             </Modal.Body>
@@ -83,7 +75,6 @@ AddDestinationModal.propTypes = {
     handleSubmit: propTypes.func.isRequired,
     addDestination: propTypes.func.isRequired,
     register: propTypes.func.isRequired,
-    handleLocalStorageClear: propTypes.func.isRequired,
     handleEnabledCheckbox: propTypes.func.isRequired,
     modalVisibility: propTypes.bool.isRequired,
     isEnabled: propTypes.bool.isRequired,

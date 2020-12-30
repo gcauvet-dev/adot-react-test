@@ -1,25 +1,42 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import propTypes from 'prop-types';
-import { Card, Col, Row } from 'react-bootstrap';
+import { Card, Col, Row, Image } from 'react-bootstrap';
+
 import Switch from 'react-switch';
 
+import { getImage } from '../services/destination.services';
+
+import { ImageLoader } from './Loader';
 import DestinationContext from '../helpers/Contexts/DestinationContext';
 
-import defaultImage from '../assets/images/default.png';
 import '../assets/css/Destination.css';
 
 const Destination = ({ handleEnableSwitch }) => {
     const destination = useContext(DestinationContext) || {};
-    const { enabled, fullAdress, city, uid, statistics: { population, hotels, averageIncome, surface } = {} } = destination;
+    const { enabled, fullAddress, images: { flag, url, alt } = {}, country, countryCode, city, uid, statistics: { population, hotels, averageIncome, surface } = {} } = destination;
+
+    const [imageUrl, setImageUrl] = useState(url);
+
+    const updateDestinationImage = (result) => {
+        destination.images.url = result;
+        setImageUrl(result);
+    };
+
+    useEffect(() => {
+        const fetchImage = async () => getImage(country, countryCode).then((result) => updateDestinationImage(result));
+        if (!url && country && countryCode) fetchImage();
+    }, [url]);
 
     return (
-        <Card className='destination' key={uid}>
-            <Card.Img variant='top' src={defaultImage} className='image' />
+        <Card className='destination'>
+            {url ? <Card.Img variant='top' src={imageUrl} className='image' alt={alt} /> : <ImageLoader />}
 
             <Row style={{ alignItems: 'center' }}>
                 <Col sm={9}>
-                    <Card.Text className='city-name'>{city}</Card.Text>
-                    <Card.Text className='address'>{fullAdress}</Card.Text>
+                    <Card.Text className='city-name'>
+                        {city} <Image src={flag} alt={alt} style={{ width: 24, marginBottom: 5 }} />
+                    </Card.Text>
+                    <Card.Text className='address'>{fullAddress}</Card.Text>
                 </Col>
 
                 <Col sm={3}>
@@ -83,7 +100,11 @@ const Destination = ({ handleEnableSwitch }) => {
 Destination.propTypes = {
     destination: propTypes.shape({
         enabled: propTypes.bool,
-        fullAdress: propTypes.string,
+        image: propTypes.shape({
+            url: propTypes.string,
+            alt: propTypes.string,
+        }),
+        fullAddress: propTypes.string,
         statistics: propTypes.shape({
             population: propTypes.number,
             hotels: propTypes.number,
