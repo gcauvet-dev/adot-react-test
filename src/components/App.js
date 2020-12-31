@@ -11,7 +11,6 @@ import { AppLoader } from './Loader';
 import Destination from './Destination';
 
 import AddDestinationModal from './Modals/AddDestinationModal';
-import ErrorToast from './Modals/ErrorToast';
 
 import { getDestinationsFromAPI } from '../services/destination.services';
 
@@ -20,13 +19,8 @@ import DestinationContext from '../helpers/Contexts/DestinationContext';
 import useLocalStorage from '../helpers/Hooks/useLocalStorage';
 
 const App = () => {
-    const [error, setError] = useState('');
-
     const [destinations, setDestinations] = useLocalStorage('destinations', []);
     const handleLocalStorageClear = () => setDestinations([]);
-
-    const [errorToastVisibility, setErrorToastVisibility] = useState(false);
-    const toggleErrorToastVisibility = () => setErrorToastVisibility(!errorToastVisibility);
 
     const [modalVisibility, setModalVisibility] = useState(false);
     const handleModalVisibility = () => setModalVisibility(!modalVisibility);
@@ -41,7 +35,7 @@ const App = () => {
     useEffect(() => {
         const fetchData = async () => {
             const result = await getDestinationsFromAPI();
-            result ? setDestinations(result) : setError('Error while fetching from API');
+            result ? setDestinations(result) : new Error('Error while fetching from API');
         };
 
         if (destinations.length === 0) fetchData();
@@ -93,7 +87,7 @@ const App = () => {
                         (destination) =>
                             search(destination) && (
                                 <DestinationContext.Provider key={uuidv4()} value={destination}>
-                                    <Destination handleEnableSwitch={handleEnableSwitch} setErrorToastVisibility={setErrorToastVisibility} />
+                                    <Destination handleEnableSwitch={handleEnableSwitch} />
                                 </DestinationContext.Provider>
                             )
                     )
@@ -113,8 +107,6 @@ const App = () => {
                 addDestination={addDestination}
                 register={register}
             />
-
-            <ErrorToast toggleErrorToastVisibility={toggleErrorToastVisibility} errorToastVisibility={errorToastVisibility} error={error} />
         </Container>
     );
 };
