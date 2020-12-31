@@ -7,11 +7,13 @@ import Switch from 'react-switch';
 import { getImage } from '../services/destination.services';
 
 import { ImageLoader } from './Loader';
+import DestinationImage from './DestinationImage';
+
 import DestinationContext from '../helpers/Contexts/DestinationContext';
 
 import '../assets/css/Destination.css';
 
-const Destination = ({ handleEnableSwitch }) => {
+const Destination = ({ handleEnableSwitch, handleSelectedDestinationUid }) => {
     const destination = useContext(DestinationContext) || {};
     const { enabled, fullAddress, images: { flag, url, alt } = {}, country, countryCode, city, uid, statistics: { population, hotels, averageIncome, surface } = {} } = destination;
 
@@ -29,14 +31,13 @@ const Destination = ({ handleEnableSwitch }) => {
 
     return (
         <Card className='destination'>
-            {url ? <Card.Img variant='top' src={imageUrl} className='image' alt={alt} /> : <ImageLoader />}
+            {url ? <DestinationImage uid={uid} imageUrl={imageUrl} country={country} city={city} handleSelectedDestinationUid={handleSelectedDestinationUid} /> : <ImageLoader />}
 
             <Row style={{ alignItems: 'center' }}>
                 <Col sm={9}>
-                    <Card.Text className='city-name'>
-                        {city} <Image src={flag} alt={alt} style={{ width: 24, marginBottom: 5 }} />
+                    <Card.Text className='address'>
+                        {fullAddress} <Image src={flag} alt={alt} style={{ width: 24, marginBottom: 5 }} />
                     </Card.Text>
-                    <Card.Text className='address'>{fullAddress}</Card.Text>
                 </Col>
 
                 <Col sm={3}>
@@ -113,6 +114,7 @@ Destination.propTypes = {
         }),
     }),
     handleEnableSwitch: propTypes.func.isRequired,
+    handleSelectedDestinationUid: propTypes.func.isRequired,
 };
 
 Destination.defaultProps = { destination: {} };

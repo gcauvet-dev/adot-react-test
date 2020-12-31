@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { getRandomBool, getRandomNumber } from './getRandom';
+import { getRandomBool, getRandomNumber } from '../Misc/getRandom';
 
 const parseDestinationFromAPI = (address) => {
     const { full_address: fullAddress, uid, city, country, country_code: countryCode } = address;

@@ -8,6 +8,7 @@
   background-color: #ffffff;
 }
 
+
 .title {
   margin: 0 285.5px 74px 0.5px;
   font-family: 'Open Sans';
@@ -25,14 +26,6 @@
   height: 36px;
   margin: 4px 0 77px 345.5px;
   padding: 9px 21px 8px;
-}
-
-.image {
-  width: 441px;
-  height: 221px;  
-  border-radius: 13px 13px 0 0 ;
-  margin: 0 0 23px;
-  object-fit: cover;
 }
 
 .city-name {
