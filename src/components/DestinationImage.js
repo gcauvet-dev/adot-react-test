@@ -28,7 +28,7 @@ function DestinationImage(props) {
                             <SocialMediaButtons
                                 key={uuidv4()}
                                 links={['https://www.facebook.com/', 'https://twitter.com/', 'https://www.instagram.com/', 'https://www.linkedin.com/']}
-                                buttonStyle={{ width: '50px', height: '50px', margin: '0px 5px', borderRadius: '50%' }}
+                                buttonStyle={{ width: '50px', height: '50px', margin: '0 5px', borderRadius: '50%' }}
                                 iconStyle={{ color: '#ffffff' }}
                                 openNewTab
                             />
@@ -44,15 +44,15 @@ function DestinationImage(props) {
                     )}
 
                     <RefreshIcon onClick={() => handleSelectedDestinationUid(destinationImageActionTypes.REFRESH, uid)}>
-                        <FontAwesomeIcon color='#fff' icon={faSyncAlt} size='lg' />
+                        <FontAwesomeIcon color='#fff' icon={faSyncAlt} />
                     </RefreshIcon>
 
                     <EditIcon onClick={() => handleSelectedDestinationUid(destinationImageActionTypes.EDIT, uid)}>
-                        <FontAwesomeIcon color='#fff' icon={faEdit} size='lg' />
+                        <FontAwesomeIcon color='#fff' icon={faEdit} />
                     </EditIcon>
 
                     <DeleteIcon onClick={() => handleSelectedDestinationUid(destinationImageActionTypes.DELETE, uid)}>
-                        <FontAwesomeIcon color='#fff' icon={faTrash} size='lg' />
+                        <FontAwesomeIcon color='#fff' icon={faTrash} />
                     </DeleteIcon>
                 </Hover>
             </DisplayOver>
@@ -121,10 +121,9 @@ const WikiLink = styled.a({
 });
 
 const Background = styled.div((props) => ({
-    // backgroundSize: 'strech',
-    // backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover !important',
+    backgroundRepeat: 'no-repeat !important',
     color: '#FFF',
-    width: '441px',
     height: '221px',
 
     borderRadius: '13px 13px 0 0',

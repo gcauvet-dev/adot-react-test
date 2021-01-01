@@ -25,7 +25,7 @@ const Destination = ({ handleEnableSwitch, handleSelectedDestinationUid }) => {
     };
 
     useEffect(() => {
-        const fetchImage = async () => getImage(country, countryCode).then((result) => updateDestinationImage(result));
+        const fetchImage = async () => getImage(country).then((result) => updateDestinationImage(result));
         if (!url && country && countryCode) fetchImage();
     }, [url]);
 

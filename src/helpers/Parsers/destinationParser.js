@@ -11,7 +11,7 @@ const parseDestinationFromAPI = (address) => {
         country,
         countryCode,
         images: {
-            flag: `https://www.countryflags.io/${countryCode.toLowerCase()}/shiny/64.png`,
+            flag: `https://www.countryflags.io/${countryCode.toLowerCase()}/flat/64.png`,
             url: '',
             alt: countryCode,
         },

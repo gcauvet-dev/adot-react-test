@@ -4,13 +4,13 @@ import { getRandomNumber } from '../helpers/Misc/getRandom';
 import { parseDestinationFromAPI } from '../helpers/Parsers/destinationParser';
 import parseImage from '../helpers/Parsers/imageParser';
 
-const getFlag = (countryCode) =>
+const getFlag = (country) =>
     axios
-        .get(`https://restcountries.eu/rest/v2/alpha/${countryCode}?fields=flag`)
+        .get(`https://restcountries.eu/rest/v2/name/${country}?fields=flag`)
         .then((flag) => flag)
-        .catch(() => `https://www.countryflags.io/${countryCode.toLowerCase()}/shiny/64.png`);
+        .catch((err) => err);
 
-const getImage = async (country, countryCode) =>
+const getImage = async (country) =>
     axios
         .get(
             `https://api.unsplash.com/search/photos?page=1
@@ -20,15 +20,25 @@ const getImage = async (country, countryCode) =>
         )
         .then((image) => parseImage(image.data.results))
         .catch(() =>
-            getFlag(countryCode)
+            getFlag(country)
                 .then((response) => response.data.flag)
                 .catch((err) => err)
         );
 
-const getDestinationsFromAPI = () =>
+const getDestinationsFromRandomDataAPI = () =>
     axios
         .get(`https://random-data-api.com/api/address/random_address?size=${getRandomNumber(5, 3)}`)
         .then((response) => response.data.map((data) => parseDestinationFromAPI(data)))
         .catch((err) => err);
 
-export { getDestinationsFromAPI, getImage };
+const getDestinationsFromWikipedia = (country) =>
+    axios
+        .get(`https://fr.wikipedia.org/w/api.php?action=query&titles=${country}&prop=revisions&rvprop=content&rvsection=0&format=json`)
+        .then((response) => console.log(response))
+        .catch(() =>
+            getDestinationsFromRandomDataAPI()
+                .then((data) => parseDestinationFromAPI(data))
+                .catch((err) => err)
+        );
+
+export { getDestinationsFromRandomDataAPI, getDestinationsFromWikipedia, getImage };

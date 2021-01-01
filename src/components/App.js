@@ -13,7 +13,7 @@ import Destination from './Destination';
 import DestinationModal from './Modals/DestinationModal';
 import DeleteDestinationModal from './Modals/DeleteDestinationModal';
 
-import { getDestinationsFromAPI } from '../services/destination.services';
+import { getDestinationsFromRandomDataAPI } from '../services/destination.services';
 
 import DestinationContext from '../helpers/Contexts/DestinationContext';
 import useLocalStorage from '../helpers/Hooks/useLocalStorage';
@@ -57,7 +57,7 @@ const App = () => {
     // Life cycle
     useEffect(() => {
         const fetchData = async () => {
-            const result = await getDestinationsFromAPI();
+            const result = await getDestinationsFromRandomDataAPI();
             result.length > 0 ? setDestinations(result) : setAlert({ message: result.message, variant: 'danger' });
         };
 
@@ -160,14 +160,24 @@ const App = () => {
 
 export default App;
 
-// TODO: Edit
-// TODO: Tests
-// TODO: Random image for new
-// TODO: Hover icon style
-// TODO : Action button style hover
-// TODO BUG : image repeat
-// TODO BUG : wrong country flag
-// TODO: height root 100%
-// ToDO : Reload individual image
-// TODO : carouselle images
-// TODO bug unique "key" prop. socials
+/* TODO: {GENERAL}
+ * Edit
+ * Tests
+ * carouselle images
+ * Reload individual image
+ * Wiki API
+ */
+
+/* TODO: {UI}
+ * Random image for new
+ * Image orientation from API
+ * Hover icon style
+ * Action button style hover
+ */
+
+/* FIXME:
+ * unique "key" prop. socials
+ * wrong country flag
+ * height root 100%
+ * default flag by country
+ */
