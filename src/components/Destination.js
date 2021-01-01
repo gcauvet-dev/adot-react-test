@@ -15,7 +15,7 @@ import '../assets/css/Destination.css';
 
 const Destination = ({ handleEnableSwitch, handleSelectedDestinationUid }) => {
     const destination = useContext(DestinationContext) || {};
-    const { enabled, fullAddress, images: { flag, url, alt } = {}, country, countryCode, city, uid, statistics: { population, hotels, averageIncome, surface } = {} } = destination;
+    const { visited, fullAddress, images: { flag, url, alt } = {}, country, countryCode, city, uid, statistics: { population, hotels, averageIncome, surface } = {} } = destination;
 
     const [imageUrl, setImageUrl] = useState(url);
 
@@ -31,33 +31,15 @@ const Destination = ({ handleEnableSwitch, handleSelectedDestinationUid }) => {
 
     return (
         <Card className='destination'>
-            {url ? <DestinationImage uid={uid} imageUrl={imageUrl} country={country} city={city} handleSelectedDestinationUid={handleSelectedDestinationUid} /> : <ImageLoader />}
+            {url ? <DestinationImage visited={visited} uid={uid} imageUrl={imageUrl} country={country} city={city} handleSelectedDestinationUid={handleSelectedDestinationUid} /> : <ImageLoader />}
 
-            <Row style={{ alignItems: 'center' }}>
-                <Col sm={9}>
-                    <Card.Text className='address'>
-                        {fullAddress} <Image src={flag} alt={alt} style={{ width: 24, marginBottom: 5 }} />
-                    </Card.Text>
-                </Col>
-
-                <Col sm={3}>
-                    <Switch
-                        onChange={handleEnableSwitch}
-                        id={uid}
-                        checked={enabled}
-                        uncheckedIcon={false}
-                        checkedIcon={false}
-                        onColor='#9fe9c5'
-                        offHandleColor='#5c5757'
-                        onHandleColor='#3fd38b'
-                        height={14}
-                        width={36}
-                        handleDiameter={20}
-                    />
-                </Col>
+            <Row style={{ justifyContent: 'flex-start', alignItems: 'center', minHeight: 80 }}>
+                <Card.Text className='address'>
+                    {fullAddress} <Image src={flag} alt={alt} style={{ width: 24, marginBottom: 5 }} />
+                </Card.Text>
             </Row>
 
-            <hr />
+            <span className='path' />
 
             <Row className='stat destination-row'>
                 <Col>
@@ -74,6 +56,22 @@ const Destination = ({ handleEnableSwitch, handleSelectedDestinationUid }) => {
 
                 <Col>
                     <Card.Text>{surface}</Card.Text>
+                </Col>
+
+                <Col>
+                    <Switch
+                        onChange={handleEnableSwitch}
+                        id={uid}
+                        checked={visited}
+                        uncheckedIcon={false}
+                        checkedIcon={false}
+                        onColor='#9fe9c5'
+                        offHandleColor='#5c5757'
+                        onHandleColor='#3fd38b'
+                        height={10}
+                        width={22}
+                        handleDiameter={12}
+                    />
                 </Col>
             </Row>
 
@@ -93,6 +91,9 @@ const Destination = ({ handleEnableSwitch, handleSelectedDestinationUid }) => {
                 <Col style={{ padding: 0 }}>
                     <Card.Text>m²</Card.Text>
                 </Col>
+                <Col style={{ padding: 0 }}>
+                    <Card.Text>Visité</Card.Text>
+                </Col>
             </Row>
         </Card>
     );
@@ -100,7 +101,7 @@ const Destination = ({ handleEnableSwitch, handleSelectedDestinationUid }) => {
 
 Destination.propTypes = {
     destination: propTypes.shape({
-        enabled: propTypes.bool,
+        visited: propTypes.bool,
         image: propTypes.shape({
             url: propTypes.string,
             alt: propTypes.string,

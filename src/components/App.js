@@ -19,9 +19,14 @@ import DestinationContext from '../helpers/Contexts/DestinationContext';
 import useLocalStorage from '../helpers/Hooks/useLocalStorage';
 import { parseDestination } from '../helpers/Parsers/destinationParser';
 
+import destinationImageActionTypes from '../helpers/Enums/DestinationImageActionTypes';
+
 const App = () => {
     // UI
-    const [error, setError] = useState('');
+    const [alert, setAlert] = useState('');
+    const autoHideAlert = setTimeout(() => {
+        setAlert('');
+    }, 8000);
 
     const [destinationModalVisibility, setDestinationModalVisibility] = useState(false);
     const handleDestinationModalVisibility = () => setDestinationModalVisibility(!destinationModalVisibility);
@@ -29,8 +34,8 @@ const App = () => {
     const [deleteDestinationModalVisibility, setDeleteDestinationModalVisibility] = useState(false);
     const handleDeleteDestinationModalVisibility = () => setDeleteDestinationModalVisibility(!deleteDestinationModalVisibility);
 
-    const [isEnabled, setEnabled] = useState(true);
-    const handleEnabledCheckbox = () => setEnabled(!isEnabled);
+    const [isVisited, setVisited] = useState(true);
+    const handleVisitedCheckbox = () => setVisited(!isVisited);
 
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -44,16 +49,16 @@ const App = () => {
     const handleSelectedDestinationUid = (type, uid) => {
         setSelectedDestinationUid(uid);
 
-        if (type === 'edit') handleDestinationModalVisibility();
-        else if (type === 'delete') handleDeleteDestinationModalVisibility();
-        else setError('Fail to set action type');
+        if (type === destinationImageActionTypes.EDIT) handleDestinationModalVisibility();
+        else if (type === destinationImageActionTypes.DELETE) handleDeleteDestinationModalVisibility();
+        else setAlert({ message: 'Failed to get action type', variant: 'danger' });
     };
 
     // Life cycle
     useEffect(() => {
         const fetchData = async () => {
             const result = await getDestinationsFromAPI();
-            result.length > 0 ? setDestinations(result) : setError(result.message);
+            result.length > 0 ? setDestinations(result) : setAlert({ message: result.message, variant: 'danger' });
         };
 
         if (destinations.length === 0) fetchData();
@@ -72,10 +77,11 @@ const App = () => {
     const deleteDestination = async () => {
         await setDestinations(destinations.filter((destination) => destination.uid !== selectedDestinationUid));
         handleDeleteDestinationModalVisibility();
+        setAlert({ message: 'La destination à été supprimée.', variant: 'success' });
     };
 
     // Other
-    const handleEnableSwitch = (checked, evt, id) => setDestinations(destinations.map((destination) => (destination.uid === id ? { ...destination, enabled: checked } : destination)));
+    const handleEnableSwitch = (checked, evt, id) => setDestinations(destinations.map((destination) => (destination.uid === id ? { ...destination, visited: checked } : destination)));
 
     const handleSearchBar = (event) => {
         const {
@@ -90,13 +96,11 @@ const App = () => {
         return fullAddress.toLowerCase().includes(searchTerm) || country.toLowerCase().includes(searchTerm) || city.toLowerCase().includes(searchTerm);
     };
 
-    console.log(selectedDestinationUid);
-
     return (
         <Container className='main'>
-            {error && (
-                <Alert variant='danger' onClose={() => setError('')} dismissible>
-                    {error}
+            {alert && (
+                <Alert variant={alert.variant} onClose={autoHideAlert}>
+                    {alert.message}
                 </Alert>
             )}
 
@@ -104,7 +108,7 @@ const App = () => {
                 <FormControl className='searchbar' placeholder='Recherche par adresse, ville, pays, etc...' aria-label='Search' aria-describedby='basic-addon2' onChange={handleSearchBar} />
 
                 <InputGroup.Append>
-                    <DropdownButton title='Actions' variant='outline-success' className='action-button' size='lg'>
+                    <DropdownButton title='Actions' variant='outline-success' bsPrefix='action-button' size='lg'>
                         <Dropdown.Item eventKey='1' onClick={handleDestinationModalVisibility}>
                             <FontAwesomeIcon color='#28a745' icon={faPlusSquare} /> Ajouter
                         </Dropdown.Item>
@@ -137,8 +141,8 @@ const App = () => {
 
             <DestinationModal
                 handleDestinationModalVisibility={handleDestinationModalVisibility}
-                isEnabled={isEnabled}
-                handleEnabledCheckbox={handleEnabledCheckbox}
+                isVisited={isVisited}
+                handleVisitedCheckbox={handleVisitedCheckbox}
                 destinationModalVisibility={destinationModalVisibility}
                 handleSubmit={handleSubmit}
                 addDestination={addDestination}
@@ -160,3 +164,10 @@ export default App;
 // TODO: Tests
 // TODO: Random image for new
 // TODO: Hover icon style
+// TODO : Action button style hover
+// TODO BUG : image repeat
+// TODO BUG : wrong country flag
+// TODO: height root 100%
+// ToDO : Reload individual image
+// TODO : carouselle images
+// TODO bug unique "key" prop. socials

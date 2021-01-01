@@ -15,7 +15,7 @@ const parseDestinationFromAPI = (address) => {
             url: '',
             alt: countryCode,
         },
-        enabled: getRandomBool(0.7),
+        visited: getRandomBool(0.7),
         statistics: {
             population: getRandomNumber(500000, 50000),
             hotels: getRandomNumber(400, 100),
@@ -26,11 +26,11 @@ const parseDestinationFromAPI = (address) => {
 };
 
 const parseDestination = (newDestination) => {
-    const { city, enabled, fullAddress, population, hotels, averageIncome, surface } = newDestination;
+    const { city, visited, fullAddress, population, hotels, averageIncome, surface } = newDestination;
 
     return {
         city,
-        enabled,
+        visited,
         fullAddress,
         country: 'world',
         countryCode: 'FR',

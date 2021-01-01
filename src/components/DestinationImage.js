@@ -1,29 +1,57 @@
 import React from 'react';
 import propTypes from 'prop-types';
+import { v4 as uuidv4 } from 'uuid';
+
+import SocialMediaButtons from 'react-social-media-buttons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
 import styled from '@emotion/styled/macro';
 
+import destinationImageActionTypes from '../helpers/Enums/DestinationImageActionTypes';
+
 function DestinationImage(props) {
-    const { imageUrl, city, country, uid, handleSelectedDestinationUid } = props;
+    const { imageUrl, city, country, uid, visited, handleSelectedDestinationUid } = props;
 
     return (
         <Background imageUrl={imageUrl}>
             <DisplayOver>
                 <BigTitle>{city}</BigTitle>
+
                 <Hover>
-                    <SubTitle>Passer ses vacances ici, c&apos;est possible !</SubTitle>
+                    {visited ? (
+                        <>
+                            <SubTitle>Félicitation, vous avez déjà visité cet endroit !</SubTitle>
 
-                    <Paragraph>
-                        Découvrez ce pays en visitant <WikiLink href={`https://fr.wikipedia.org/wiki/${country}`}>sa page Wikipedia !</WikiLink>
-                    </Paragraph>
+                            <Paragraph>Partagez vos moments préférés avec vos amis :</Paragraph>
 
-                    <EditIcon onClick={() => handleSelectedDestinationUid('edit', uid)}>
+                            <SocialMediaButtons
+                                key={uuidv4()}
+                                links={['https://www.facebook.com/', 'https://twitter.com/', 'https://www.instagram.com/', 'https://www.linkedin.com/']}
+                                buttonStyle={{ width: '50px', height: '50px', margin: '0px 5px', borderRadius: '50%' }}
+                                iconStyle={{ color: '#ffffff' }}
+                                openNewTab
+                            />
+                        </>
+                    ) : (
+                        <>
+                            <SubTitle>Passer vos vacances ici, c&apos;est possible !</SubTitle>
+
+                            <Paragraph>
+                                Découvrez ce pays en visitant <WikiLink href={`https://fr.wikipedia.org/wiki/${country}`}>sa page Wikipedia !</WikiLink>
+                            </Paragraph>
+                        </>
+                    )}
+
+                    <RefreshIcon onClick={() => handleSelectedDestinationUid(destinationImageActionTypes.REFRESH, uid)}>
+                        <FontAwesomeIcon color='#fff' icon={faSyncAlt} size='lg' />
+                    </RefreshIcon>
+
+                    <EditIcon onClick={() => handleSelectedDestinationUid(destinationImageActionTypes.EDIT, uid)}>
                         <FontAwesomeIcon color='#fff' icon={faEdit} size='lg' />
                     </EditIcon>
 
-                    <DeleteIcon onClick={() => handleSelectedDestinationUid('delete', uid)}>
+                    <DeleteIcon onClick={() => handleSelectedDestinationUid(destinationImageActionTypes.DELETE, uid)}>
                         <FontAwesomeIcon color='#fff' icon={faTrash} size='lg' />
                     </DeleteIcon>
                 </Hover>
@@ -66,6 +94,13 @@ const Paragraph = styled.p({
     transition: 'transform 350ms ease',
 });
 
+const RefreshIcon = styled.div({
+    position: 'absolute',
+    top: '20px',
+    right: '80px',
+    cursor: 'pointer',
+});
+
 const EditIcon = styled.div({
     position: 'absolute',
     top: '20px',
@@ -93,7 +128,7 @@ const Background = styled.div((props) => ({
     height: '221px',
 
     borderRadius: '13px 13px 0 0',
-    margin: '0 0 23px',
+    // margin: '0 0 23px',
     background: `url(${props.imageUrl})`,
     [`:hover ${DisplayOver}`]: {
         backgroundColor: 'rgba(0,0,0,.5)',
@@ -114,6 +149,7 @@ DestinationImage.propTypes = {
     country: propTypes.string.isRequired,
     city: propTypes.string.isRequired,
     uid: propTypes.string.isRequired,
+    visited: propTypes.bool.isRequired,
     handleSelectedDestinationUid: propTypes.func.isRequired,
 };
 

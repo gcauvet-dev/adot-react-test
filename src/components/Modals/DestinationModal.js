@@ -1,13 +1,15 @@
 import React from 'react';
 import propTypes from 'prop-types';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSave } from '@fortawesome/free-solid-svg-icons';
 import { Modal, Form, Button, Row, Col } from 'react-bootstrap';
 import { Checkbox } from 'pretty-checkbox-react';
 import FocusedInput from '../FocusedInput';
 
 import '../../assets/css/DestinationModal.css';
 
-const DestinationModal = ({ isEnabled, handleEnabledCheckbox, handleDestinationModalVisibility, destinationModalVisibility, handleSubmit, addDestination, register }) => (
+const DestinationModal = ({ isVisited, handleVisitedCheckbox, handleDestinationModalVisibility, destinationModalVisibility, handleSubmit, addDestination, register }) => (
     <Modal autoFocus={false} size='lg' aria-labelledby='contained-modal-title-vcenter' centered show={destinationModalVisibility} onHide={handleDestinationModalVisibility}>
         <Modal.Body className='destinationModal'>
             <Form onSubmit={handleSubmit(addDestination)}>
@@ -48,15 +50,15 @@ const DestinationModal = ({ isEnabled, handleEnabledCheckbox, handleDestinationM
                     </Row>
 
                     <Row className='row-modal'>
-                        <Col md={10}>
-                            <Checkbox checked={isEnabled} id='enabled' name='enabled' ref={register} onChange={handleEnabledCheckbox}>
-                                Activé
+                        <Col md={9}>
+                            <Checkbox checked={isVisited} id='visited' name='visited' ref={register} onChange={handleVisitedCheckbox}>
+                                J&apos;ai déjà visité cet endroit
                             </Checkbox>
                         </Col>
 
-                        <Col md={2}>
+                        <Col md={3}>
                             <Button variant='success' type='submit'>
-                                + Ajouter
+                                <FontAwesomeIcon color='#fff' icon={faSave} /> Sauvegarder
                             </Button>
                         </Col>
                     </Row>
@@ -71,9 +73,9 @@ DestinationModal.propTypes = {
     handleSubmit: propTypes.func.isRequired,
     addDestination: propTypes.func.isRequired,
     register: propTypes.func.isRequired,
-    handleEnabledCheckbox: propTypes.func.isRequired,
+    handleVisitedCheckbox: propTypes.func.isRequired,
     destinationModalVisibility: propTypes.bool.isRequired,
-    isEnabled: propTypes.bool.isRequired,
+    isVisited: propTypes.bool.isRequired,
 };
 
 export default DestinationModal;
