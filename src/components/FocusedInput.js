@@ -3,7 +3,7 @@ import propTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
 
 function FocusedInput(props) {
-    const { register } = props;
+    const { register, id, name, placeholder } = props;
 
     const addressRef = useRef(null);
 
@@ -15,12 +15,12 @@ function FocusedInput(props) {
         <Form.Control
             autoFocus
             required
-            id='fullAddress'
-            name='fullAddress'
+            id={id}
+            name={name}
             type='text'
             className='modal-address'
             size='lg'
-            placeholder='Adresse'
+            placeholder={placeholder}
             ref={(inputElement) => {
                 register(inputElement);
                 addressRef.current = inputElement;
@@ -31,6 +31,9 @@ function FocusedInput(props) {
 
 FocusedInput.propTypes = {
     register: propTypes.func.isRequired,
+    id: propTypes.string.isRequired,
+    name: propTypes.string.isRequired,
+    placeholder: propTypes.string.isRequired,
 };
 
 export default FocusedInput;

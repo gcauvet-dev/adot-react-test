@@ -1,22 +1,24 @@
 import React from 'react';
 import propTypes from 'prop-types';
 import { Modal, Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const DeleteDestinationModal = ({ deleteDestinationModalVisibility, handleDeleteDestinationModalVisibility, deleteDestination }) => (
     <Modal size='xs' aria-labelledby='contained-modal-title-vcenter' centered show={deleteDestinationModalVisibility} onHide={handleDeleteDestinationModalVisibility}>
         <Modal.Header closeButton>
-            <Modal.Title>Suppression</Modal.Title>
+            <Modal.Title>Delete</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>Êtes-vous sur de vouloir supprimer cette destination ?</Modal.Body>
+        <Modal.Body>Are you sure you want to delete this destination ?</Modal.Body>
 
         <Modal.Footer>
             <Button variant='secondary' onClick={handleDeleteDestinationModalVisibility}>
-                Annuler
+                <FontAwesomeIcon color='#fff' icon={faTimes} /> Cancel
             </Button>
 
             <Button variant='danger' onClick={deleteDestination}>
-                Supprimer
+                <FontAwesomeIcon color='#fff' icon={faTrash} /> Delete
             </Button>
         </Modal.Footer>
     </Modal>

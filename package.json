@@ -27,7 +27,9 @@
         "redux": "^4.0.5",
         "redux-logger": "^3.0.6",
         "redux-thunk": "^2.3.0",
-        "uuid": "^8.3.1"
+        "uuid": "^8.3.1",
+        "wikipedia": "^1.0.1",
+        "wtf_wikipedia": "^8.5.1"
     },
     "scripts": {
         "start": "react-scripts start",

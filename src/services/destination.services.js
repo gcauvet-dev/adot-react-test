@@ -1,7 +1,7 @@
 import axios from 'axios';
+import wtf from 'wtf_wikipedia';
 
-import { getRandomNumber } from '../helpers/Misc/getRandom';
-import { parseDestinationFromAPI } from '../helpers/Parsers/destinationParser';
+import { parseDestinationFromWikipedia } from '../helpers/Parsers/destinationParser';
 import parseImage from '../helpers/Parsers/imageParser';
 
 const getFlag = (country) =>
@@ -25,20 +25,10 @@ const getImage = async (country) =>
                 .catch((err) => err)
         );
 
-const getDestinationsFromRandomDataAPI = () =>
-    axios
-        .get(`https://random-data-api.com/api/address/random_address?size=${getRandomNumber(5, 3)}`)
-        .then((response) => response.data.map((data) => parseDestinationFromAPI(data)))
+const getDestinationFromWikipedia = async (country) =>
+    wtf
+        .fetch(country, 'en')
+        .then((response) => parseDestinationFromWikipedia(response))
         .catch((err) => err);
 
-const getDestinationsFromWikipedia = (country) =>
-    axios
-        .get(`https://fr.wikipedia.org/w/api.php?action=query&titles=${country}&prop=revisions&rvprop=content&rvsection=0&format=json`)
-        .then((response) => console.log(response))
-        .catch(() =>
-            getDestinationsFromRandomDataAPI()
-                .then((data) => parseDestinationFromAPI(data))
-                .catch((err) => err)
-        );
-
-export { getDestinationsFromRandomDataAPI, getDestinationsFromWikipedia, getImage };
+export { getDestinationFromWikipedia, getImage };

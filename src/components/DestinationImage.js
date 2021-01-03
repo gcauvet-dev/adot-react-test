@@ -11,19 +11,21 @@ import styled from '@emotion/styled/macro';
 import destinationImageActionTypes from '../helpers/Enums/DestinationImageActionTypes';
 
 function DestinationImage(props) {
-    const { imageUrl, city, country, uid, visited, handleSelectedDestinationUid } = props;
+    const { imageUrl, country, uid, visited, handleSelectedDestinationUid, flag, alt } = props;
 
     return (
         <Background imageUrl={imageUrl}>
             <DisplayOver>
-                <BigTitle>{city}</BigTitle>
+                <BigTitle>
+                    {country} <Flag flag={flag} />
+                </BigTitle>
 
                 <Hover>
                     {visited ? (
                         <>
-                            <SubTitle>Félicitation, vous avez déjà visité cet endroit !</SubTitle>
+                            <SubTitle>Congratulation, you already visited this place!</SubTitle>
 
-                            <Paragraph>Partagez vos moments préférés avec vos amis :</Paragraph>
+                            <Paragraph>Share your favorite moments with your friends:</Paragraph>
 
                             <SocialMediaButtons
                                 key={uuidv4()}
@@ -35,10 +37,10 @@ function DestinationImage(props) {
                         </>
                     ) : (
                         <>
-                            <SubTitle>Passer vos vacances ici, c&apos;est possible !</SubTitle>
+                            <SubTitle>You next holiday here? It&apos;s possible !</SubTitle>
 
                             <Paragraph>
-                                Découvrez ce pays en visitant <WikiLink href={`https://fr.wikipedia.org/wiki/${country}`}>sa page Wikipedia !</WikiLink>
+                                Discover {country} on <WikiLink href={`https://fr.wikipedia.org/wiki/${country}`}>Wikipedia !</WikiLink>
                             </Paragraph>
                         </>
                     )}
@@ -78,6 +80,12 @@ const BigTitle = styled.h2({
     fontFamily: 'Roboto',
 });
 
+const Flag = styled.img((props) => ({
+    background: `url(${props.flag})`,
+    width: 24,
+    marginBottom: 5,
+}));
+
 const Hover = styled.div({
     opacity: 0,
     transition: 'opacity 350ms ease',
@@ -116,7 +124,6 @@ const DeleteIcon = styled.div({
 });
 
 const WikiLink = styled.a({
-    textDecoration: 'none',
     color: '#fff',
 });
 
@@ -125,9 +132,7 @@ const Background = styled.div((props) => ({
     backgroundRepeat: 'no-repeat !important',
     color: '#FFF',
     height: '221px',
-
     borderRadius: '13px 13px 0 0',
-    // margin: '0 0 23px',
     background: `url(${props.imageUrl})`,
     [`:hover ${DisplayOver}`]: {
         backgroundColor: 'rgba(0,0,0,.5)',
@@ -146,7 +151,6 @@ const Background = styled.div((props) => ({
 DestinationImage.propTypes = {
     imageUrl: propTypes.string.isRequired,
     country: propTypes.string.isRequired,
-    city: propTypes.string.isRequired,
     uid: propTypes.string.isRequired,
     visited: propTypes.bool.isRequired,
     handleSelectedDestinationUid: propTypes.func.isRequired,

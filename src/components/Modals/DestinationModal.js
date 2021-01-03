@@ -13,20 +13,20 @@ const DestinationModal = ({ isVisited, handleVisitedCheckbox, handleDestinationM
     <Modal autoFocus={false} size='lg' aria-labelledby='contained-modal-title-vcenter' centered show={destinationModalVisibility} onHide={handleDestinationModalVisibility}>
         <Modal.Body className='destinationModal'>
             <Form onSubmit={handleSubmit(addDestination)}>
-                <Form.Label className='modal-title'>Ajouter une destination</Form.Label>
+                <Form.Label className='modal-title'>Add a destination</Form.Label>
 
                 <Form.Group>
-                    <Form.Control required className='modal-city' size='lg' type='text' placeholder='Nom de la ville' id='city' name='city' ref={register} />
+                    <Form.Control required className='modal-capital' size='lg' type='text' placeholder='Capital name' id='capital' name='capital' ref={register} />
 
-                    <FocusedInput register={register} />
+                    <FocusedInput register={register} id='address' name='address' placeholder='Address' />
 
                     <Row>
                         <Col>
-                            <Form.Control required className='modal-stat' size='lg' type='number' min='0' max='20000000' placeholder='Habitants' id='population' name='population' ref={register} />
+                            <Form.Control required className='modal-stat' size='lg' type='number' min='0' max='20000000' placeholder='Population' id='population' name='population' ref={register} />
                         </Col>
 
                         <Col>
-                            <Form.Control required className='modal-stat' size='lg' type='number' min='0' max='10000' placeholder='Hôtels' id='hotels' name='hotels' ref={register} />
+                            <Form.Control required className='modal-stat' size='lg' type='number' min='0' max='1000000' placeholder='Languages' id='languages' name='languages' ref={register} />
                         </Col>
 
                         <Col>
@@ -37,7 +37,7 @@ const DestinationModal = ({ isVisited, handleVisitedCheckbox, handleDestinationM
                                 type='number'
                                 min='0'
                                 max='200000'
-                                placeholder='Revenu Moy'
+                                placeholder='Average income'
                                 id='averageIncome'
                                 name='averageIncome'
                                 ref={register}
@@ -45,20 +45,20 @@ const DestinationModal = ({ isVisited, handleVisitedCheckbox, handleDestinationM
                         </Col>
 
                         <Col>
-                            <Form.Control required className='modal-stat' size='lg' type='number' min='0' max='20000000' placeholder='m²' id='surface' name='surface' ref={register} />
+                            <Form.Control required className='modal-stat' size='lg' type='number' min='0' max='20000000' placeholder='km²' id='surface' name='surface' ref={register} />
                         </Col>
                     </Row>
 
                     <Row className='row-modal'>
-                        <Col md={9}>
+                        <Col md={10}>
                             <Checkbox checked={isVisited} id='visited' name='visited' ref={register} onChange={handleVisitedCheckbox}>
-                                J&apos;ai déjà visité cet endroit
+                                I already visited this place
                             </Checkbox>
                         </Col>
 
-                        <Col md={3}>
+                        <Col md={2}>
                             <Button variant='success' type='submit'>
-                                <FontAwesomeIcon color='#fff' icon={faSave} /> Sauvegarder
+                                <FontAwesomeIcon color='#fff' icon={faSave} /> Save
                             </Button>
                         </Col>
                     </Row>

@@ -15,7 +15,7 @@ import '../assets/css/Destination.css';
 
 const Destination = ({ handleEnableSwitch, handleSelectedDestinationUid }) => {
     const destination = useContext(DestinationContext) || {};
-    const { visited, fullAddress, images: { flag, url, alt } = {}, country, countryCode, city, uid, statistics: { population, hotels, averageIncome, surface } = {} } = destination;
+    const { visited, images: { flag, url, alt } = {}, country, countryCode, capital, uid, statistics: { population, languages, averageIncome, area } = {} } = destination;
 
     const [imageUrl, setImageUrl] = useState(url);
 
@@ -31,11 +31,24 @@ const Destination = ({ handleEnableSwitch, handleSelectedDestinationUid }) => {
 
     return (
         <Card className='destination'>
-            {url ? <DestinationImage visited={visited} uid={uid} imageUrl={imageUrl} country={country} city={city} handleSelectedDestinationUid={handleSelectedDestinationUid} /> : <ImageLoader />}
+            {url ? (
+                <DestinationImage
+                    src={flag}
+                    alt={alt}
+                    visited={visited}
+                    uid={uid}
+                    imageUrl={imageUrl}
+                    country={country}
+                    capital={capital}
+                    handleSelectedDestinationUid={handleSelectedDestinationUid}
+                />
+            ) : (
+                <ImageLoader />
+            )}
 
-            <Row style={{ justifyContent: 'flex-start', alignItems: 'center', minHeight: 80 }}>
+            <Row style={{ justifyContent: 'flex-start', alignItems: 'center', minHeight: 50 }}>
                 <Card.Text className='address'>
-                    {fullAddress} <Image src={flag} alt={alt} style={{ width: 24, marginBottom: 5 }} />
+                    <Image src={flag} alt={alt} style={{ width: 24, marginBottom: 5 }} /> {capital}
                 </Card.Text>
             </Row>
 
@@ -47,7 +60,7 @@ const Destination = ({ handleEnableSwitch, handleSelectedDestinationUid }) => {
                 </Col>
 
                 <Col>
-                    <Card.Text>{hotels}</Card.Text>
+                    <Card.Text>{languages}</Card.Text>
                 </Col>
 
                 <Col>
@@ -55,14 +68,14 @@ const Destination = ({ handleEnableSwitch, handleSelectedDestinationUid }) => {
                 </Col>
 
                 <Col>
-                    <Card.Text>{surface}</Card.Text>
+                    <Card.Text>{area}</Card.Text>
                 </Col>
 
                 <Col>
                     <Switch
                         onChange={handleEnableSwitch}
                         id={uid}
-                        checked={visited}
+                        checked={visited || false}
                         uncheckedIcon={false}
                         checkedIcon={false}
                         onColor='#9fe9c5'
@@ -77,22 +90,22 @@ const Destination = ({ handleEnableSwitch, handleSelectedDestinationUid }) => {
 
             <Row className='label destination-row'>
                 <Col style={{ padding: 0 }}>
-                    <Card.Text>Habitants</Card.Text>
+                    <Card.Text>Pop.</Card.Text>
                 </Col>
 
                 <Col style={{ padding: 0 }}>
-                    <Card.Text>Hôtels</Card.Text>
+                    <Card.Text>Lang.</Card.Text>
                 </Col>
 
                 <Col style={{ padding: 0 }}>
-                    <Card.Text>Revenu Moy</Card.Text>
+                    <Card.Text>GDP</Card.Text>
                 </Col>
 
                 <Col style={{ padding: 0 }}>
-                    <Card.Text>m²</Card.Text>
+                    <Card.Text>km2</Card.Text>
                 </Col>
                 <Col style={{ padding: 0 }}>
-                    <Card.Text>Visité</Card.Text>
+                    <Card.Text>Visited</Card.Text>
                 </Col>
             </Row>
         </Card>
@@ -106,18 +119,31 @@ Destination.propTypes = {
             url: propTypes.string,
             alt: propTypes.string,
         }),
-        fullAddress: propTypes.string,
         statistics: propTypes.shape({
             population: propTypes.number,
-            hotels: propTypes.number,
+            languages: propTypes.number,
             averageIncome: propTypes.number,
-            surface: propTypes.number,
+            area: propTypes.number,
         }),
     }),
     handleEnableSwitch: propTypes.func.isRequired,
     handleSelectedDestinationUid: propTypes.func.isRequired,
 };
 
-Destination.defaultProps = { destination: {} };
+Destination.defaultProps = {
+    destination: {
+        visited: false,
+        image: {
+            url: '',
+            alt: '',
+        },
+        statistics: {
+            population: 0,
+            languages: 0,
+            averageIncome: 0,
+            area: 0,
+        },
+    },
+};
 
 export default Destination;

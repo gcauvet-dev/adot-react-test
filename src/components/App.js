@@ -13,7 +13,7 @@ import Destination from './Destination';
 import DestinationModal from './Modals/DestinationModal';
 import DeleteDestinationModal from './Modals/DeleteDestinationModal';
 
-import { getDestinationsFromRandomDataAPI } from '../services/destination.services';
+import { getDestinationFromWikipedia } from '../services/destination.services';
 
 import DestinationContext from '../helpers/Contexts/DestinationContext';
 import useLocalStorage from '../helpers/Hooks/useLocalStorage';
@@ -57,8 +57,14 @@ const App = () => {
     // Life cycle
     useEffect(() => {
         const fetchData = async () => {
-            const result = await getDestinationsFromRandomDataAPI();
-            result.length > 0 ? setDestinations(result) : setAlert({ message: result.message, variant: 'danger' });
+            // const result = await getDestinationsFromRandomDataAPI();
+
+            // ERROR : Portugal && Lithuania
+
+            const results = await getDestinationFromWikipedia('Republic of the congo');
+
+            setDestinations([results]);
+            // results.length > 0 ? setDestinations(results) : setAlert({ message: results.message, variant: 'danger' });
         };
 
         if (destinations.length === 0) fetchData();
@@ -92,9 +98,12 @@ const App = () => {
     };
 
     const search = (destination) => {
-        const { fullAddress, country, city } = destination;
-        return fullAddress.toLowerCase().includes(searchTerm) || country.toLowerCase().includes(searchTerm) || city.toLowerCase().includes(searchTerm);
+        const { country, capital } = destination;
+        if (country && capital) return country.toLowerCase().includes(searchTerm) || capital.toLowerCase().includes(searchTerm);
+        return false;
     };
+
+    console.log(destinations);
 
     return (
         <Container className='main'>
@@ -104,17 +113,19 @@ const App = () => {
                 </Alert>
             )}
 
+            {/* {setDestinations([])} */}
+
             <InputGroup>
-                <FormControl className='searchbar' placeholder='Recherche par adresse, ville, pays, etc...' aria-label='Search' aria-describedby='basic-addon2' onChange={handleSearchBar} />
+                <FormControl className='searchbar' placeholder='Search by address, capital, country, etc...' aria-label='Search' aria-describedby='basic-addon2' onChange={handleSearchBar} />
 
                 <InputGroup.Append>
                     <DropdownButton title='Actions' variant='outline-success' bsPrefix='action-button' size='lg'>
                         <Dropdown.Item eventKey='1' onClick={handleDestinationModalVisibility}>
-                            <FontAwesomeIcon color='#28a745' icon={faPlusSquare} /> Ajouter
+                            <FontAwesomeIcon color='#28a745' icon={faPlusSquare} /> Add
                         </Dropdown.Item>
 
                         <Dropdown.Item eventKey='2' onClick={handleLocalStorageClear}>
-                            <FontAwesomeIcon color='#28a745' icon={faSyncAlt} /> Rafraichir
+                            <FontAwesomeIcon color='#28a745' icon={faSyncAlt} /> Refresh
                         </Dropdown.Item>
                     </DropdownButton>
                 </InputGroup.Append>
@@ -165,7 +176,8 @@ export default App;
  * Tests
  * carouselle images
  * Reload individual image
- * Wiki API
+ * Wiki API ++ // EXTRACT DATA FRON EACH INDIVIDUAL NODE
+ * Traduction angalis
  */
 
 /* TODO: {UI}
