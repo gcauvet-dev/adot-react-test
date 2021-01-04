@@ -1,5 +1,5 @@
 const destinationImageActionTypes = Object.freeze({
-    EDIT: 'EDIT',
+    INFO: ' INFO',
     DELETE: 'DELETE',
     REFRESH: 'REFRESH',
 });

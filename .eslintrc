@@ -34,6 +34,7 @@
         }
     },
     "rules": {
+        "no-restricted-syntax": 0,
         "no-underscore-dangle": [
             "error",
             {

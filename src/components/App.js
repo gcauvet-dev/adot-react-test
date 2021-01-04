@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { Container, DropdownButton, Dropdown, InputGroup, FormControl, Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusSquare, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
@@ -13,12 +12,13 @@ import Destination from './Destination';
 import DestinationModal from './Modals/DestinationModal';
 import DeleteDestinationModal from './Modals/DeleteDestinationModal';
 
-import { getDestinationFromWikipedia } from '../services/destination.services';
+import { getDestinationFromRestCountries } from '../services/destination.services';
 
 import DestinationContext from '../helpers/Contexts/DestinationContext';
 import useLocalStorage from '../helpers/Hooks/useLocalStorage';
-import { parseDestination } from '../helpers/Parsers/destinationParser';
+import { getRandomValuesFromArray } from '../helpers/Misc/getRandom';
 
+import countryList from '../helpers/Enums/countryList';
 import destinationImageActionTypes from '../helpers/Enums/DestinationImageActionTypes';
 
 const App = () => {
@@ -39,7 +39,7 @@ const App = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
 
-    const { register, handleSubmit } = useForm();
+    const [selectedCountry, setSelectedCountry] = useState('');
 
     // Destinations
     const [destinations, setDestinations] = useLocalStorage('destinations', []);
@@ -49,7 +49,7 @@ const App = () => {
     const handleSelectedDestinationUid = (type, uid) => {
         setSelectedDestinationUid(uid);
 
-        if (type === destinationImageActionTypes.EDIT) handleDestinationModalVisibility();
+        if (type === destinationImageActionTypes.REFRESH) handleDestinationRefresh();
         else if (type === destinationImageActionTypes.DELETE) handleDeleteDestinationModalVisibility();
         else setAlert({ message: 'Failed to get action type', variant: 'danger' });
     };
@@ -57,27 +57,29 @@ const App = () => {
     // Life cycle
     useEffect(() => {
         const fetchData = async () => {
-            // const result = await getDestinationsFromRandomDataAPI();
+            const randomCountryCodes = getRandomValuesFromArray(countryList, 5);
+            const randomDestinations = randomCountryCodes.map((country) => getDestinationFromRestCountries(country.value));
 
-            // ERROR : Portugal && Lithuania
-
-            const results = await getDestinationFromWikipedia('Republic of the congo');
-
-            setDestinations([results]);
-            // results.length > 0 ? setDestinations(results) : setAlert({ message: results.message, variant: 'danger' });
+            const results = await Promise.all(randomDestinations);
+            results.length > 0 ? setDestinations(results) : setAlert({ message: 'Failed to get destination from API', variant: 'danger' });
         };
 
         if (destinations.length === 0) fetchData();
-    }, [destinations, setDestinations]);
+    });
 
     useEffect(() => {
         if (!destinationModalVisibility && !deleteDestinationModalVisibility) setSelectedDestinationUid('');
     }, [selectedDestinationUid, destinationModalVisibility, deleteDestinationModalVisibility]);
 
     // CRUD
-    const addDestination = (newDestination) => {
-        setDestinations([...destinations, parseDestination(newDestination)]);
+    const addDestination = async () => {
         handleDestinationModalVisibility();
+
+        if (selectedCountry) {
+            const newDestination = await getDestinationFromRestCountries(selectedCountry);
+            !newDestination.message ? setDestinations([newDestination, ...destinations]) : setAlert({ message: newDestination.message, variant: 'danger' });
+            setSelectedCountry('');
+        }
     };
 
     const deleteDestination = async () => {
@@ -86,8 +88,13 @@ const App = () => {
         setAlert({ message: 'La destination à été supprimée.', variant: 'success' });
     };
 
+    const handleDestinationRefresh = () => {};
+
     // Other
     const handleEnableSwitch = (checked, evt, id) => setDestinations(destinations.map((destination) => (destination.uid === id ? { ...destination, visited: checked } : destination)));
+    const handleSelectChange = (selectedOption) => setSelectedCountry(selectedOption.value);
+
+    const search = (destination) => destination.country.toLowerCase().includes(searchTerm) || destination.capital.toLowerCase().includes(searchTerm);
 
     const handleSearchBar = (event) => {
         const {
@@ -97,14 +104,6 @@ const App = () => {
         setSearchTerm(value.toLowerCase());
     };
 
-    const search = (destination) => {
-        const { country, capital } = destination;
-        if (country && capital) return country.toLowerCase().includes(searchTerm) || capital.toLowerCase().includes(searchTerm);
-        return false;
-    };
-
-    console.log(destinations);
-
     return (
         <Container className='main'>
             {alert && (
@@ -113,28 +112,26 @@ const App = () => {
                 </Alert>
             )}
 
-            {/* {setDestinations([])} */}
-
             <InputGroup>
                 <FormControl className='searchbar' placeholder='Search by address, capital, country, etc...' aria-label='Search' aria-describedby='basic-addon2' onChange={handleSearchBar} />
 
                 <InputGroup.Append>
                     <DropdownButton title='Actions' variant='outline-success' bsPrefix='action-button' size='lg'>
-                        <Dropdown.Item eventKey='1' onClick={handleDestinationModalVisibility}>
+                        <Dropdown.Item onClick={handleDestinationModalVisibility}>
                             <FontAwesomeIcon color='#28a745' icon={faPlusSquare} /> Add
                         </Dropdown.Item>
 
-                        <Dropdown.Item eventKey='2' onClick={handleLocalStorageClear}>
+                        <Dropdown.Item onClick={handleLocalStorageClear}>
                             <FontAwesomeIcon color='#28a745' icon={faSyncAlt} /> Refresh
                         </Dropdown.Item>
                     </DropdownButton>
                 </InputGroup.Append>
             </InputGroup>
 
-            <div className='app-title'>Destinations</div>
+            <div className='app-title'>Destinations Checklist</div>
 
             <Container className='app-container'>
-                {destinations ? (
+                {destinations.length > 0 ? (
                     destinations.map(
                         (destination) =>
                             search(destination) && (
@@ -154,10 +151,9 @@ const App = () => {
                 handleDestinationModalVisibility={handleDestinationModalVisibility}
                 isVisited={isVisited}
                 handleVisitedCheckbox={handleVisitedCheckbox}
+                handleSelectChange={handleSelectChange}
                 destinationModalVisibility={destinationModalVisibility}
-                handleSubmit={handleSubmit}
                 addDestination={addDestination}
-                register={register}
             />
 
             <DeleteDestinationModal
@@ -172,24 +168,27 @@ const App = () => {
 export default App;
 
 /* TODO: {GENERAL}
- * Edit
  * Tests
  * carouselle images
  * Reload individual image
- * Wiki API ++ // EXTRACT DATA FRON EACH INDIVIDUAL NODE
- * Traduction angalis
+ * info from wiki
+ * images credit
+ * export button
  */
 
 /* TODO: {UI}
- * Random image for new
- * Image orientation from API
  * Hover icon style
  * Action button style hover
  */
 
 /* FIXME:
  * unique "key" prop. socials
- * wrong country flag
+ * updateDestinationImage rerequest each time
+ * Enter on modal form reload page
+ * Autofocus select
  * height root 100%
- * default flag by country
+ * Image exeded probleme no replace
+ * Can't perform a React state update on an unmounted component
+ * Using UNSAFE_componentWillReceiveProps
+ * findDOMNode is deprecated in StrictMode. findDOMNode
  */

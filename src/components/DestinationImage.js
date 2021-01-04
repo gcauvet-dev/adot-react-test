@@ -5,20 +5,18 @@ import { v4 as uuidv4 } from 'uuid';
 import SocialMediaButtons from 'react-social-media-buttons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faSyncAlt, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import styled from '@emotion/styled/macro';
 
 import destinationImageActionTypes from '../helpers/Enums/DestinationImageActionTypes';
 
-function DestinationImage(props) {
-    const { imageUrl, country, uid, visited, handleSelectedDestinationUid, flag, alt } = props;
+function DestinationImage({ imageUrl, country, uid, visited, handleSelectedDestinationUid }) {
+    const links = ['https://www.facebook.com/', 'https://twitter.com/', 'https://www.instagram.com/', 'https://www.linkedin.com/'];
 
     return (
         <Background imageUrl={imageUrl}>
             <DisplayOver>
-                <BigTitle>
-                    {country} <Flag flag={flag} />
-                </BigTitle>
+                <BigTitle>{country}</BigTitle>
 
                 <Hover>
                     {visited ? (
@@ -29,7 +27,7 @@ function DestinationImage(props) {
 
                             <SocialMediaButtons
                                 key={uuidv4()}
-                                links={['https://www.facebook.com/', 'https://twitter.com/', 'https://www.instagram.com/', 'https://www.linkedin.com/']}
+                                links={links}
                                 buttonStyle={{ width: '50px', height: '50px', margin: '0 5px', borderRadius: '50%' }}
                                 iconStyle={{ color: '#ffffff' }}
                                 openNewTab
@@ -45,13 +43,13 @@ function DestinationImage(props) {
                         </>
                     )}
 
+                    <InfoIcon onClick={() => handleSelectedDestinationUid(destinationImageActionTypes.INFO, uid)}>
+                        <FontAwesomeIcon color='#fff' icon={faInfoCircle} />
+                    </InfoIcon>
+
                     <RefreshIcon onClick={() => handleSelectedDestinationUid(destinationImageActionTypes.REFRESH, uid)}>
                         <FontAwesomeIcon color='#fff' icon={faSyncAlt} />
                     </RefreshIcon>
-
-                    <EditIcon onClick={() => handleSelectedDestinationUid(destinationImageActionTypes.EDIT, uid)}>
-                        <FontAwesomeIcon color='#fff' icon={faEdit} />
-                    </EditIcon>
 
                     <DeleteIcon onClick={() => handleSelectedDestinationUid(destinationImageActionTypes.DELETE, uid)}>
                         <FontAwesomeIcon color='#fff' icon={faTrash} />
@@ -80,12 +78,6 @@ const BigTitle = styled.h2({
     fontFamily: 'Roboto',
 });
 
-const Flag = styled.img((props) => ({
-    background: `url(${props.flag})`,
-    width: 24,
-    marginBottom: 5,
-}));
-
 const Hover = styled.div({
     opacity: 0,
     transition: 'opacity 350ms ease',
@@ -102,17 +94,17 @@ const Paragraph = styled.p({
     transition: 'transform 350ms ease',
 });
 
-const RefreshIcon = styled.div({
+const InfoIcon = styled.div({
     position: 'absolute',
     top: '20px',
-    right: '80px',
+    right: '70px',
     cursor: 'pointer',
 });
 
-const EditIcon = styled.div({
+const RefreshIcon = styled.div({
     position: 'absolute',
     top: '20px',
-    right: '50px',
+    right: '45px',
     cursor: 'pointer',
 });
 
@@ -142,9 +134,6 @@ const Background = styled.div((props) => ({
     },
     [`:hover ${Hover}`]: {
         opacity: 1,
-    },
-    [`:hover ${EditIcon}`]: {
-        color: '#000',
     },
 }));
 

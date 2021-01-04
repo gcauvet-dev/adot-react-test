@@ -40,7 +40,7 @@
   color: #333333;
 }
 
-.address {
+.capital {
     font-family: 'Open Sans';
     margin-left: 25px;
     margin-right: 25px;
@@ -89,4 +89,10 @@
     align-items: center;
     margin-left: 10px;
     margin-right: 10px;
+}
+
+.capital-row {
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 50px;
 }

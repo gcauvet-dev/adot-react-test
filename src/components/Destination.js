@@ -1,54 +1,43 @@
 import React, { useContext, useState, useEffect } from 'react';
 import propTypes from 'prop-types';
+
 import { Card, Col, Row, Image } from 'react-bootstrap';
-
 import Switch from 'react-switch';
-
-import { getImage } from '../services/destination.services';
 
 import { ImageLoader } from './Loader';
 import DestinationImage from './DestinationImage';
 
+import { getImage } from '../services/destination.services';
 import DestinationContext from '../helpers/Contexts/DestinationContext';
 
 import '../assets/css/Destination.css';
 
 const Destination = ({ handleEnableSwitch, handleSelectedDestinationUid }) => {
     const destination = useContext(DestinationContext) || {};
-    const { visited, images: { flag, url, alt } = {}, country, countryCode, capital, uid, statistics: { population, languages, averageIncome, area } = {} } = destination;
+    const { visited, images: { flag, url, alt } = {}, country, capital, uid, statistics: { population, languages, area } = {} } = destination;
 
     const [imageUrl, setImageUrl] = useState(url);
 
     const updateDestinationImage = (result) => {
+        console.log(url);
+
         destination.images.url = result;
+
         setImageUrl(result);
     };
 
     useEffect(() => {
         const fetchImage = async () => getImage(country).then((result) => updateDestinationImage(result));
-        if (!url && country && countryCode) fetchImage();
+        if (!url) fetchImage();
     }, [url]);
 
     return (
         <Card className='destination'>
-            {url ? (
-                <DestinationImage
-                    src={flag}
-                    alt={alt}
-                    visited={visited}
-                    uid={uid}
-                    imageUrl={imageUrl}
-                    country={country}
-                    capital={capital}
-                    handleSelectedDestinationUid={handleSelectedDestinationUid}
-                />
-            ) : (
-                <ImageLoader />
-            )}
+            {url ? <DestinationImage visited={visited} uid={uid} imageUrl={imageUrl} country={country} handleSelectedDestinationUid={handleSelectedDestinationUid} /> : <ImageLoader />}
 
-            <Row style={{ justifyContent: 'flex-start', alignItems: 'center', minHeight: 50 }}>
-                <Card.Text className='address'>
-                    <Image src={flag} alt={alt} style={{ width: 24, marginBottom: 5 }} /> {capital}
+            <Row className='capital-row'>
+                <Card.Text className='capital'>
+                    <Image src={flag} alt={alt} style={{ width: 24, marginBottom: 5 }} /> Capital: {capital || 'N/A'}
                 </Card.Text>
             </Row>
 
@@ -56,19 +45,15 @@ const Destination = ({ handleEnableSwitch, handleSelectedDestinationUid }) => {
 
             <Row className='stat destination-row'>
                 <Col>
-                    <Card.Text>{population}</Card.Text>
+                    <Card.Text>{(population && population.toLocaleString()) || 'N/A'}</Card.Text>
                 </Col>
 
                 <Col>
-                    <Card.Text>{languages}</Card.Text>
+                    <Card.Text>{languages || 'N/A'}</Card.Text>
                 </Col>
 
                 <Col>
-                    <Card.Text>{averageIncome}</Card.Text>
-                </Col>
-
-                <Col>
-                    <Card.Text>{area}</Card.Text>
+                    <Card.Text>{(area && area.toLocaleString()) || 'N/A'}</Card.Text>
                 </Col>
 
                 <Col>
@@ -90,19 +75,15 @@ const Destination = ({ handleEnableSwitch, handleSelectedDestinationUid }) => {
 
             <Row className='label destination-row'>
                 <Col style={{ padding: 0 }}>
-                    <Card.Text>Pop.</Card.Text>
+                    <Card.Text>Population</Card.Text>
                 </Col>
 
                 <Col style={{ padding: 0 }}>
-                    <Card.Text>Lang.</Card.Text>
+                    <Card.Text>Language</Card.Text>
                 </Col>
 
                 <Col style={{ padding: 0 }}>
-                    <Card.Text>GDP</Card.Text>
-                </Col>
-
-                <Col style={{ padding: 0 }}>
-                    <Card.Text>km2</Card.Text>
+                    <Card.Text>km²</Card.Text>
                 </Col>
                 <Col style={{ padding: 0 }}>
                     <Card.Text>Visited</Card.Text>
@@ -122,7 +103,6 @@ Destination.propTypes = {
         statistics: propTypes.shape({
             population: propTypes.number,
             languages: propTypes.number,
-            averageIncome: propTypes.number,
             area: propTypes.number,
         }),
     }),
@@ -131,19 +111,7 @@ Destination.propTypes = {
 };
 
 Destination.defaultProps = {
-    destination: {
-        visited: false,
-        image: {
-            url: '',
-            alt: '',
-        },
-        statistics: {
-            population: 0,
-            languages: 0,
-            averageIncome: 0,
-            area: 0,
-        },
-    },
+    destination: {},
 };
 
 export default Destination;
