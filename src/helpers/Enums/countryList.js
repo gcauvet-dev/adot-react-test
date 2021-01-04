@@ -1,6 +1,6 @@
 const countryList = [
     { label: 'Afghanistan', value: 'AF' },
-    { label: 'ÅLand Islands', value: 'AX' },
+    { label: 'Åland Islands', value: 'AX' },
     { label: 'Albania', value: 'AL' },
     { label: 'Algeria', value: 'DZ' },
     { label: 'American Samoa', value: 'AS' },

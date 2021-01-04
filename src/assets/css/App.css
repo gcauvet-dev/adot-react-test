@@ -1,6 +1,11 @@
+html, body {
+  height: 100%
+}
+
 #root {
     padding: 25px;
     background-color: #f9f9f9;
+    min-height: 100%;
 }
 
 input::-webkit-outer-spin-button,
@@ -67,7 +72,7 @@ input[type=number] {
     height: 42px;
     background-color: #28a745;
     color: #fff;
-	display: inline-block;
+    display: inline-block;
 	font-weight: 400;
 	text-align: center;
 	vertical-align: middle;
@@ -77,4 +82,17 @@ input[type=number] {
 	font-size: 1rem;
 	line-height: 1.5;
 	transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.no-destination-found {
+    margin: 25px;
+    font-family: 'Open Sans';
+    font-size:  18px;
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #28a745;
+
 }

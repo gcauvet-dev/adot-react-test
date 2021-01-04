@@ -19,10 +19,7 @@ const Destination = ({ handleEnableSwitch, handleSelectedDestinationUid }) => {
     const [imageUrl, setImageUrl] = useState(url);
 
     const updateDestinationImage = (result) => {
-        console.log(url);
-
         destination.images.url = result;
-
         setImageUrl(result);
     };
 
@@ -37,7 +34,7 @@ const Destination = ({ handleEnableSwitch, handleSelectedDestinationUid }) => {
 
             <Row className='capital-row'>
                 <Card.Text className='capital'>
-                    <Image src={flag} alt={alt} style={{ width: 24, marginBottom: 5 }} /> Capital: {capital || 'N/A'}
+                    <Image src={flag} alt={alt} style={{ width: 24, marginBottom: 5 }} /> {capital || 'N/A'}
                 </Card.Text>
             </Row>
 

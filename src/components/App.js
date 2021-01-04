@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Container, DropdownButton, Dropdown, InputGroup, FormControl, Alert } from 'react-bootstrap';
+import { Container, InputGroup, FormControl, Alert, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusSquare, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
+import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { v4 as uuidv4 } from 'uuid';
-
-import '../assets/css/App.css';
 
 import { AppLoader } from './Loader';
 import Destination from './Destination';
@@ -16,10 +14,10 @@ import { getDestinationFromRestCountries } from '../services/destination.service
 
 import DestinationContext from '../helpers/Contexts/DestinationContext';
 import useLocalStorage from '../helpers/Hooks/useLocalStorage';
-import { getRandomValuesFromArray } from '../helpers/Misc/getRandom';
 
-import countryList from '../helpers/Enums/countryList';
 import destinationImageActionTypes from '../helpers/Enums/DestinationImageActionTypes';
+
+import '../assets/css/App.css';
 
 const App = () => {
     // UI
@@ -34,6 +32,9 @@ const App = () => {
     const [deleteDestinationModalVisibility, setDeleteDestinationModalVisibility] = useState(false);
     const handleDeleteDestinationModalVisibility = () => setDeleteDestinationModalVisibility(!deleteDestinationModalVisibility);
 
+    const [infoDestinationModalVisibility, setInfoDestinationModalVisibility] = useState(false);
+    const handleDestinationDisplayInfoVisibility = () => setInfoDestinationModalVisibility(!infoDestinationModalVisibility);
+
     const [isVisited, setVisited] = useState(true);
     const handleVisitedCheckbox = () => setVisited(!isVisited);
 
@@ -43,29 +44,15 @@ const App = () => {
 
     // Destinations
     const [destinations, setDestinations] = useLocalStorage('destinations', []);
-    const handleLocalStorageClear = () => setDestinations([]);
 
     const [selectedDestinationUid, setSelectedDestinationUid] = useState('');
     const handleSelectedDestinationUid = (type, uid) => {
         setSelectedDestinationUid(uid);
 
-        if (type === destinationImageActionTypes.REFRESH) handleDestinationRefresh();
+        if (type === destinationImageActionTypes.INFO) handleDestinationDisplayInfoVisibility();
         else if (type === destinationImageActionTypes.DELETE) handleDeleteDestinationModalVisibility();
         else setAlert({ message: 'Failed to get action type', variant: 'danger' });
     };
-
-    // Life cycle
-    useEffect(() => {
-        const fetchData = async () => {
-            const randomCountryCodes = getRandomValuesFromArray(countryList, 5);
-            const randomDestinations = randomCountryCodes.map((country) => getDestinationFromRestCountries(country.value));
-
-            const results = await Promise.all(randomDestinations);
-            results.length > 0 ? setDestinations(results) : setAlert({ message: 'Failed to get destination from API', variant: 'danger' });
-        };
-
-        if (destinations.length === 0) fetchData();
-    });
 
     useEffect(() => {
         if (!destinationModalVisibility && !deleteDestinationModalVisibility) setSelectedDestinationUid('');
@@ -77,7 +64,7 @@ const App = () => {
 
         if (selectedCountry) {
             const newDestination = await getDestinationFromRestCountries(selectedCountry);
-            !newDestination.message ? setDestinations([newDestination, ...destinations]) : setAlert({ message: newDestination.message, variant: 'danger' });
+            !newDestination.message ? setDestinations([{ ...newDestination, visited: isVisited }, ...destinations]) : setAlert({ message: newDestination.message, variant: 'danger' });
             setSelectedCountry('');
         }
     };
@@ -87,9 +74,6 @@ const App = () => {
         handleDeleteDestinationModalVisibility();
         setAlert({ message: 'La destination à été supprimée.', variant: 'success' });
     };
-
-    const handleDestinationRefresh = () => {};
-
     // Other
     const handleEnableSwitch = (checked, evt, id) => setDestinations(destinations.map((destination) => (destination.uid === id ? { ...destination, visited: checked } : destination)));
     const handleSelectChange = (selectedOption) => setSelectedCountry(selectedOption.value);
@@ -115,17 +99,9 @@ const App = () => {
             <InputGroup>
                 <FormControl className='searchbar' placeholder='Search by address, capital, country, etc...' aria-label='Search' aria-describedby='basic-addon2' onChange={handleSearchBar} />
 
-                <InputGroup.Append>
-                    <DropdownButton title='Actions' variant='outline-success' bsPrefix='action-button' size='lg'>
-                        <Dropdown.Item onClick={handleDestinationModalVisibility}>
-                            <FontAwesomeIcon color='#28a745' icon={faPlusSquare} /> Add
-                        </Dropdown.Item>
-
-                        <Dropdown.Item onClick={handleLocalStorageClear}>
-                            <FontAwesomeIcon color='#28a745' icon={faSyncAlt} /> Refresh
-                        </Dropdown.Item>
-                    </DropdownButton>
-                </InputGroup.Append>
+                <Button variant='success' bsPrefix='action-button' onClick={handleDestinationModalVisibility}>
+                    <FontAwesomeIcon color='#fff' icon={faPlusSquare} size='lg' />
+                </Button>
             </InputGroup>
 
             <div className='app-title'>Destinations Checklist</div>
@@ -169,11 +145,8 @@ export default App;
 
 /* TODO: {GENERAL}
  * Tests
- * carouselle images
- * Reload individual image
- * info from wiki
- * images credit
- * export button
+ * Info from wiki
+ * Images credits
  */
 
 /* TODO: {UI}
@@ -186,7 +159,6 @@ export default App;
  * updateDestinationImage rerequest each time
  * Enter on modal form reload page
  * Autofocus select
- * height root 100%
  * Image exeded probleme no replace
  * Can't perform a React state update on an unmounted component
  * Using UNSAFE_componentWillReceiveProps

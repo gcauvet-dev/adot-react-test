@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import SocialMediaButtons from 'react-social-media-buttons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faSyncAlt, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import styled from '@emotion/styled/macro';
 
 import destinationImageActionTypes from '../helpers/Enums/DestinationImageActionTypes';
@@ -44,12 +44,10 @@ function DestinationImage({ imageUrl, country, uid, visited, handleSelectedDesti
                     )}
 
                     <InfoIcon onClick={() => handleSelectedDestinationUid(destinationImageActionTypes.INFO, uid)}>
-                        <FontAwesomeIcon color='#fff' icon={faInfoCircle} />
+                        <WikiLink href={`https://fr.wikipedia.org/wiki/${country}`}>
+                            <FontAwesomeIcon color='#fff' icon={faInfoCircle} />
+                        </WikiLink>
                     </InfoIcon>
-
-                    <RefreshIcon onClick={() => handleSelectedDestinationUid(destinationImageActionTypes.REFRESH, uid)}>
-                        <FontAwesomeIcon color='#fff' icon={faSyncAlt} />
-                    </RefreshIcon>
 
                     <DeleteIcon onClick={() => handleSelectedDestinationUid(destinationImageActionTypes.DELETE, uid)}>
                         <FontAwesomeIcon color='#fff' icon={faTrash} />
@@ -97,14 +95,7 @@ const Paragraph = styled.p({
 const InfoIcon = styled.div({
     position: 'absolute',
     top: '20px',
-    right: '70px',
-    cursor: 'pointer',
-});
-
-const RefreshIcon = styled.div({
-    position: 'absolute',
-    top: '20px',
-    right: '45px',
+    right: '40px',
     cursor: 'pointer',
 });
 
