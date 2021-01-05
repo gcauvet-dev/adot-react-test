@@ -147,6 +147,7 @@ export default App;
  * Tests
  * Info from wiki
  * Images credits
+ * Multiple select
  */
 
 /* TODO: {UI}

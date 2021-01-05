@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import propTypes from 'prop-types';
 
 import { Card, Col, Row, Image } from 'react-bootstrap';
@@ -18,15 +18,18 @@ const Destination = ({ handleEnableSwitch, handleSelectedDestinationUid }) => {
 
     const [imageUrl, setImageUrl] = useState(url);
 
-    const updateDestinationImage = (result) => {
-        destination.images.url = result;
-        setImageUrl(result);
-    };
+    const updateDestinationImage = useCallback(
+        (result) => {
+            destination.images.url = result;
+            setImageUrl(result);
+        },
+        [destination]
+    );
 
     useEffect(() => {
         const fetchImage = async () => getImage(country).then((result) => updateDestinationImage(result));
         if (!url) fetchImage();
-    }, [url]);
+    }, [url, country, updateDestinationImage]);
 
     return (
         <Card className='destination'>
