@@ -2,6 +2,8 @@
 
 > ❗ You are on the "destination-checklist" branch, where I had fun with the project and turned it into a more complete App. 😉❗
 
+### Try it out
+
 You can try a live version of this branch [here!](https://destination-checklist.netlify.app/)
 
 ### Description
