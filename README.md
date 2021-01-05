@@ -27,4 +27,4 @@ $ npm start
 
 ### Contact
 * Email: [gcauvet@smaha-consulting.com](mailto:gcauvet@smaha-consulting.com)
-* Website: [gcauvet-dev.com](gcauvet-dev.com)
+* Website: [gcauvet-dev.com](https://gcauvet-dev.com)
