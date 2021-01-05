@@ -1,6 +1,8 @@
 # Adot technical test
 
-> ❗ Don't forget to check my other branch "destination-checklist" 😉❗
+> ❗ You are on the "destination-checklist" branch, where I had fun with the project and turned it into a more complete App. 😉❗
+
+You can try a live version of this branch [here!](https://destination-checklist.netlify.app/)
 
 ### Description
 
