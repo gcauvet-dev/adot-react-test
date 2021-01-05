@@ -1,10 +1,10 @@
 # Adot technical test
 
-> ❗ Don't forget to check my other branch "destination-checklist" 😉❗
+> ❗ Don't forget to check my other branch "[destination-checklist](https://github.com/smaha-consulting/adot-react-test/tree/destination-checklist)" 😉❗
 
 ### Description
 
-Adot React integration test for fullstack position based on [this Zeplin template](zpl://screen?pid=5a7ad68f88c8649c0ab9fbb8&sid=5fe36f40c4c8e99a5d042f69).
+Adot React integration test for fullstack position based on [this Zeplin template](https://app.zeplin.io/project/5a7ad68f88c8649c0ab9fbb8/screen/5fe36f40c4c8e99a5d042f69).
 
 
 ### Instructions
